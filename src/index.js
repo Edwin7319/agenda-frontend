@@ -9,13 +9,9 @@ import 'primeicons/primeicons.css';
 import 'react-toastify/dist/ReactToastify.css';
 import './style.scss';
 
-import {ToastContainer} from 'react-toastify';
 
 ReactDOM.render(
-    <React.StrictMode>
-        <CalendarApp/>
-        <ToastContainer/>
-    </React.StrictMode>,
+    <CalendarApp/>,
     document.getElementById('root')
 );
 

@@ -6,7 +6,7 @@ import {
     Redirect,
 } from 'react-router-dom';
 import LoginScreen from '../components/auth/login/LoginScreen';
-import CalendarScreen from '../components/calendar/CalendarScreen';
+import CalendarScreen from '../components/calendar/route/CalendarScreen';
 import RegisterScreen from '../components/auth/register/RegisterScreen';
 
 function AppRouter() {
