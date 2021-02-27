@@ -9,6 +9,8 @@ import CalendarModal from '../modal/CalendarModal';
 import * as moment from 'moment';
 import {CALENDAR_MESSAGES} from '../../../constant/calendar-message';
 import {Calendar, momentLocalizer} from 'react-big-calendar';
+import {useDispatch} from 'react-redux';
+import {uiOpenModal} from '../../../actions/ui';
 
 
 moment.locale('es');
@@ -31,16 +33,16 @@ const eventList = [
 function CalenderScreen() {
 
     const [lastView, setLastView] = useState(localStorage.getItem('pestania-activa') || 'month');
+    const dispatch = useDispatch();
 
     const eventGetStyle = (event, startDate, endDate, isSelected) => {
     }
 
     const onDoubleClick = (event) => {
-        console.log(event);
+        dispatch(uiOpenModal());
     }
 
     const onSelectEvent = (event) => {
-        console.log(event);
     }
 
     const onViewChange = (event) => {

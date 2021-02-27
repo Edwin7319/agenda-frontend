@@ -1,23 +1,27 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Modal from 'react-modal';
 import {CUSTOM_MODAL_STYLE} from '../../../constant/custom-modal-style';
-import CalendarForm from "../form/CalendarForm";
+import CalendarForm from '../form/CalendarForm';
+import {useDispatch, useSelector} from 'react-redux';
+import {uiCloseModal} from '../../../actions/ui';
 
 Modal.setAppElement('#root');
 
 function CalendarModal() {
 
-    const [isModalOpen, setModalOpen] = useState(true);
+    const {modalOpen} = useSelector(select => select.ui);
+    const dispatch = useDispatch();
+
 
     const closeModal = () => {
-        setModalOpen(false);
+        dispatch(uiCloseModal());
     }
 
     return (
         <div className="row">
             <div className="col-md-6">
                 <Modal
-                    isOpen={isModalOpen}
+                    isOpen={modalOpen}
                     // onAfterOpen={afterOpenModal}
                     onRequestClose={closeModal}
                     style={CUSTOM_MODAL_STYLE}

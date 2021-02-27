@@ -23,7 +23,7 @@ function CalendarForm() {
         endDate: finishDate,
     });
 
-    const [setFormValid] = useState(false)
+    const [isFormValied, setFormValid] = useState(false)
 
     const {
         title,
@@ -33,13 +33,13 @@ function CalendarForm() {
     } = formValues;
 
     const validateForm = useCallback(() => {
-        return title.trim().length > 2;
+        return title.trim().length < 2;
     }, [title])
 
     useEffect(
         () => {
             setFormValid(validateForm());
-        }, [title, startDate, endDate, setFormValid, validateForm]
+        }, [setFormValid, validateForm]
     );
 
     const handleOnSubmit = (event) => {
@@ -62,7 +62,7 @@ function CalendarForm() {
     }
 
     return (
-        <>
+        <div className="mt-0 mb-4">
             <h3 className="text-center">
                 AGREGAR EVENTO
             </h3>
@@ -142,8 +142,16 @@ function CalendarForm() {
                     </div>
                 </div>
 
+                <button
+                    type="submit"
+                    className="btn btn-outline-primary btn-block"
+                    disabled={isFormValied}
+                >
+                    <i className="far fa-save"/>
+                    <span> Guardar</span>
+                </button>
             </form>
-        </>
+        </div>
     );
 }
 
