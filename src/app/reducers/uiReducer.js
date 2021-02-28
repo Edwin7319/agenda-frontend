@@ -6,7 +6,7 @@ const initialState = {
 
 function uiReducer(state = initialState, action) {
 
-    const {type, payload} = action;
+    const {type} = action;
 
     switch (type) {
         case TYPES.uiOpenModal:
@@ -20,7 +20,7 @@ function uiReducer(state = initialState, action) {
                 modalOpen: false,
             }
         default:
-            return  state;
+            return state;
     }
 }
 

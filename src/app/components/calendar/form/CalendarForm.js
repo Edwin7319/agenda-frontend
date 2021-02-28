@@ -4,6 +4,9 @@ import TextField from '@material-ui/core/TextField';
 import useForm from '../../../hooks/useForm';
 import {toast} from 'react-toastify';
 import {TOASTER_CONFIG} from '../../../constant/toaster-config';
+import {useDispatch, useSelector} from 'react-redux';
+import {calendarAddNewEvent, calendarClearSelectedEvent, calendarUpdateEvent} from '../../../actions/calendar';
+import {uiCloseModal} from '../../../actions/ui';
 
 const initalDate = moment()
     .add(0, 'hours')
@@ -16,7 +19,10 @@ const finishDate = moment()
 
 function CalendarForm() {
 
-    const [formValues, formInputChange] = useForm({
+    const dispatch = useDispatch();
+    const {selectedEvent} = useSelector(select => select.calendar);
+
+    const [formValues, formInputChange, resetForm, setFormValues] = useForm({
         title: '',
         note: '',
         startDate: initalDate,
@@ -42,6 +48,23 @@ function CalendarForm() {
         }, [setFormValid, validateForm]
     );
 
+    useEffect(
+        () => {
+            if (selectedEvent) {
+                const startDate = moment(selectedEvent.startDate)
+                    .format('yyyy-MM-DDTHH:mm');
+                const endDate = moment(selectedEvent.endDate)
+                    .format('yyyy-MM-DDTHH:mm');
+                const actualEvent = {
+                    ...selectedEvent,
+                    startDate,
+                    endDate,
+                }
+                setFormValues(actualEvent);
+            }
+        }, [selectedEvent, setFormValues]
+    )
+
     const handleOnSubmit = (event) => {
         event.preventDefault();
         const date1 = moment(startDate)
@@ -59,12 +82,36 @@ function CalendarForm() {
             return;
         }
 
+        const newEvent = {
+            id: Math.random(),
+            ...formValues,
+            user: {
+                uid: 69,
+                name: 'usario quemado',
+            }
+        }
+
+        if (selectedEvent) {
+            delete newEvent.id;
+            dispatch(calendarUpdateEvent(selectedEvent.id, newEvent));
+        } else {
+            dispatch(calendarAddNewEvent(newEvent));
+        }
+
+        dispatch(calendarClearSelectedEvent());
+        dispatch(uiCloseModal());
+        resetForm();
+
+        const mensaje = selectedEvent ? 'editado' : 'agregado';
+        toast.success(`Evento ${mensaje} de manera correcta`, TOASTER_CONFIG);
     }
 
     return (
         <div className="mt-0 mb-4">
             <h3 className="text-center">
-                AGREGAR EVENTO
+                {
+                    selectedEvent ? 'EDITAR' : 'AGREGAR'
+                } EVENTO
             </h3>
             <hr/>
             <form onSubmit={handleOnSubmit}>
@@ -99,7 +146,6 @@ function CalendarForm() {
                             value={endDate}
                         />
                     </div>
-
 
                     <div className="col-sm-12 mt-3">
                         <hr/>
@@ -140,16 +186,23 @@ function CalendarForm() {
                             value={note}
                         />
                     </div>
+
+                    <div className="col-sm-12 mt-3">
+                        <button
+                            type="submit"
+                            className="btn btn-outline-primary btn-block"
+                            disabled={isFormValied}
+                        >
+                            <i className="far fa-save"/>
+                            <span>
+                                {
+                                    selectedEvent ? ' EDITAR' : ' GUARDAR'
+                                }
+                            </span>
+                        </button>
+                    </div>
                 </div>
 
-                <button
-                    type="submit"
-                    className="btn btn-outline-primary btn-block"
-                    disabled={isFormValied}
-                >
-                    <i className="far fa-save"/>
-                    <span> Guardar</span>
-                </button>
             </form>
         </div>
     );

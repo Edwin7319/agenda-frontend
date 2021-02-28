@@ -4,6 +4,7 @@ import {CUSTOM_MODAL_STYLE} from '../../../constant/custom-modal-style';
 import CalendarForm from '../form/CalendarForm';
 import {useDispatch, useSelector} from 'react-redux';
 import {uiCloseModal} from '../../../actions/ui';
+import {calendarClearSelectedEvent} from "../../../actions/calendar";
 
 Modal.setAppElement('#root');
 
@@ -14,6 +15,7 @@ function CalendarModal() {
 
 
     const closeModal = () => {
+        dispatch(calendarClearSelectedEvent());
         dispatch(uiCloseModal());
     }
 

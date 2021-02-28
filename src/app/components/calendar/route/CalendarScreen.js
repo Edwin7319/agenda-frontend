@@ -9,31 +9,22 @@ import CalendarModal from '../modal/CalendarModal';
 import * as moment from 'moment';
 import {CALENDAR_MESSAGES} from '../../../constant/calendar-message';
 import {Calendar, momentLocalizer} from 'react-big-calendar';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {uiOpenModal} from '../../../actions/ui';
+import {calendarClearSelectedEvent, calendarSetSelectedEvent} from '../../../actions/calendar';
+import AddNewEvent from '../../ui/AddNewEvent';
+import DeleteEvent from '../../ui/DeleteEvent';
 
 
 moment.locale('es');
 const localizer = momentLocalizer(moment);
 
-const eventList = [
-    {
-        title: 'Fecha actual',
-        start: moment().toDate(),
-        end: moment()
-            .add(2, 'hours')
-            .toDate(),
-        user: {
-            uid: '1',
-            name: 'Edwin'
-        }
-    }
-];
 
 function CalenderScreen() {
 
     const [lastView, setLastView] = useState(localStorage.getItem('pestania-activa') || 'month');
     const dispatch = useDispatch();
+    const {events, selectedEvent} = useSelector(select => select.calendar);
 
     const eventGetStyle = (event, startDate, endDate, isSelected) => {
     }
@@ -42,12 +33,17 @@ function CalenderScreen() {
         dispatch(uiOpenModal());
     }
 
-    const onSelectEvent = (event) => {
+    const onSimpleClick = (event) => {
+        dispatch(calendarSetSelectedEvent(event));
     }
 
     const onViewChange = (event) => {
         setLastView(event);
         localStorage.setItem('pestania-activa', event);
+    }
+
+    const onSelectSlot = (event) => {
+        dispatch(calendarClearSelectedEvent());
     }
 
     return (
@@ -56,21 +52,27 @@ function CalenderScreen() {
 
             <Calendar
                 localizer={localizer}
-                events={eventList}
-                startAccessor="start"
-                endAccessor="end"
+                events={events}
+                startAccessor="startDate"
+                endAccessor="endDate"
                 style={{height: 500}}
                 messages={CALENDAR_MESSAGES}
                 eventPropGetter={eventGetStyle}
                 onDoubleClickEvent={onDoubleClick}
-                onSelectEvent={onSelectEvent}
+                onSelectEvent={onSimpleClick}
                 onView={onViewChange}
+                onSelectSlot={onSelectSlot}
+                selectable={true}
                 view={lastView}
                 components={{
                     event: CalendarEvent
                 }}
             />
 
+            <AddNewEvent/>
+            {
+                selectedEvent && <DeleteEvent/>
+            }
             <CalendarModal/>
         </div>
     );

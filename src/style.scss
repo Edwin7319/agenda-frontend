@@ -57,7 +57,23 @@ label {
   outline: none;
   padding: 10px;
   display: block;
-  overflow: auto;
-  width: 550px;
+  width: 600px;
   height: auto;
+}
+
+
+.btn-add {
+  border-radius: 80%;
+  bottom: 25px;
+  font-size: 30px;
+  padding: 25px;
+  position: fixed;
+  right: 25px;
+}
+
+.btn-delete {
+  bottom: 25px;
+  padding: 10px;
+  position: fixed;
+  left: 40px;
 }
