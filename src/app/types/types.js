@@ -6,4 +6,12 @@ export const TYPES = {
     calendarClearSelectedEvent: 'clear selected event',
     calendarUpdateEvent: 'update event',
     calendarDeleteEvent: 'delete event',
+    authAuthenticated: 'authenticated login',
+    authAuthenticatedFinish: 'finish authenticated login',
+    authStartLogin: 'start login',
+    authLogin: 'login',
+    authStartRegister: 'regiser',
+    authStartRenewToken: 'renew token',
+    authLogout: 'logout',
+
 }
