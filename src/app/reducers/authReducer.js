@@ -11,10 +11,19 @@ function authReducer(state = initialState, action) {
         case TYPES.authLogin:
             return {
                 ...state,
-                authenticated: true,
                 user: {
                     ...payload,
-                }
+                },
+                authenticated: true,
+            }
+        case TYPES.authAuthenticatedFinish:
+            return {
+                ...state,
+                authenticated: true,
+            }
+        case TYPES.authLogout:
+            return {
+                authenticated: false,
             }
         default:
             return state;
