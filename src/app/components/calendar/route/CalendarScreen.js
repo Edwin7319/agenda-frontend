@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'moment/locale/es';
@@ -11,7 +11,11 @@ import {CALENDAR_MESSAGES} from '../../../constant/calendar-message';
 import {Calendar, momentLocalizer} from 'react-big-calendar';
 import {useDispatch, useSelector} from 'react-redux';
 import {uiOpenModal} from '../../../actions/ui';
-import {calendarClearSelectedEvent, calendarSetSelectedEvent} from '../../../actions/calendar';
+import {
+    calendarClearSelectedEvent,
+    calendarSetSelectedEvent,
+    calendarStartLoadingEvents
+} from '../../../actions/calendar';
 import AddNewEvent from '../../ui/AddNewEvent';
 import DeleteEvent from '../../ui/DeleteEvent';
 
@@ -25,8 +29,22 @@ function CalenderScreen() {
     const [lastView, setLastView] = useState(localStorage.getItem('pestania-activa') || 'month');
     const dispatch = useDispatch();
     const {events, selectedEvent} = useSelector(select => select.calendar);
+    const {user:{uid}} = useSelector(select => select.auth);
+
+    useEffect(
+        () => {
+            dispatch(calendarStartLoadingEvents());
+        }, [dispatch]
+    );
 
     const eventGetStyle = (event, startDate, endDate, isSelected) => {
+        const style = {
+            backgroundColor: (event.user.uid === uid) ? '#3174ad' : '#c19c17',
+            boderRadius: '0px',
+            display: 'block',
+            color: '#fff',
+        }
+        return {style};
     }
 
     const onDoubleClick = (event) => {

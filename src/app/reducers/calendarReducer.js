@@ -1,22 +1,7 @@
 import {TYPES} from '../types/types';
-import * as moment from "moment";
 
 const initialState = {
-    events: [
-        {
-            id: Math.random(),
-            title: 'Fecha actual',
-            startDate: moment().toDate(),
-            endDate: moment()
-                .add(2, 'hours')
-                .toDate(),
-            notes: 'Recordatorio cumpleaños',
-            user: {
-                uid: '1',
-                name: 'Edwin'
-            }
-        }
-    ],
+    events: [],
     selectedEvent: null,
 }
 
@@ -24,6 +9,11 @@ function calendarReducer(state = initialState, action) {
     const {type, payload} = action;
 
     switch (type) {
+        case TYPES.calendarLoadEvents:
+            return {
+                ...state,
+                events: [...payload],
+            }
         case TYPES.calendarSetSelectedEvent:
             return {
                 ...state,
@@ -45,7 +35,7 @@ function calendarReducer(state = initialState, action) {
                 events: state
                     .events
                     .map(
-                        (event) => event.id === payload.id ?
+                        (event) => event._id === payload.id ?
                             payload.event :
                             event
                     )
@@ -57,9 +47,14 @@ function calendarReducer(state = initialState, action) {
                 events: state
                     .events
                     .filter(
-                        (event) => event.id !== payload
+                        (event) => event._id !== payload
                     )
             }
+        case TYPES.calendarLogout: {
+            return {
+                ...initialState,
+            }
+        }
         default:
             return state;
     }

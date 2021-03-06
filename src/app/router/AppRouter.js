@@ -8,8 +8,8 @@ import CalendarScreen from '../components/calendar/route/CalendarScreen';
 import RegisterScreen from '../components/auth/register/RegisterScreen';
 import {useDispatch, useSelector} from 'react-redux';
 import {renewToken} from '../actions/auth';
-import PublicRouter from "./PublicRouter";
-import PrivateRouter from "./PrivateRouter";
+import PublicRouter from './PublicRouter';
+import PrivateRouter from './PrivateRouter';
 
 function AppRouter() {
 
@@ -21,6 +21,7 @@ function AppRouter() {
             dispatch(renewToken());
         }, [dispatch]
     );
+
 
 
     return (
