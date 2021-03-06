@@ -1,8 +1,6 @@
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {calendarDeleteEvent} from '../../actions/calendar';
-import {toast} from 'react-toastify';
-import {TOASTER_CONFIG} from '../../constant/toaster-config';
+import {calendarStartDeleteEvent} from '../../actions/calendar';
 
 function DeleteEvent() {
 
@@ -10,8 +8,7 @@ function DeleteEvent() {
     const {selectedEvent} = useSelector(select => select.calendar);
 
     const handleDeleteEvent = () => {
-        dispatch(calendarDeleteEvent(selectedEvent.id));
-        toast.success('Evento eliminado de manera correcta', TOASTER_CONFIG);
+        dispatch(calendarStartDeleteEvent(selectedEvent._id));
     }
 
     return (

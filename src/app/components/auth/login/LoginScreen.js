@@ -2,13 +2,25 @@ import React from 'react';
 
 import './login-style.scss';
 import {Card} from 'primereact/card';
-import {Link} from "react-router-dom";
+import {Link} from 'react-router-dom';
+import useForm from '../../../hooks/useForm';
+import {useDispatch} from 'react-redux';
+import {startLogin} from '../../../actions/auth';
 
 
 function LoginScreen() {
 
+    const dispatch = useDispatch();
+    const [formValues, formInputChange] = useForm({
+        email: 'vanessa@gmail.com',
+        password: '12345678',
+    });
+
+    const {email, password} = formValues;
+
     const handleOnSubmit = (event) => {
         event.preventDefault();
+        dispatch(startLogin(formValues));
     }
 
     return (
@@ -26,17 +38,19 @@ function LoginScreen() {
                                 <div className="col-sm-12 mt-3">
                                     <label
                                         className="title-label"
-                                        htmlFor="username"
+                                        htmlFor="email"
                                     >
                                         Usuario o correo:
                                     </label>
                                     <input
-                                        type="text"
-                                        id="username"
+                                        type="email"
+                                        id="email"
                                         autoComplete="off"
                                         placeholder="EJ: edwin@gmail.com"
-                                        name="username"
+                                        name="email"
                                         className="form-control"
+                                        value={email}
+                                        onChange={formInputChange}
                                     />
                                 </div>
 
@@ -54,6 +68,8 @@ function LoginScreen() {
                                         placeholder="**********"
                                         name="password"
                                         className="form-control"
+                                        value={password}
+                                        onChange={formInputChange}
                                     />
                                 </div>
 
@@ -84,7 +100,7 @@ function LoginScreen() {
                             </div>
                             <div className="col-sm-12 mt-3">
                                 <button
-                                className="btn btn-sm btn-block btn-link"
+                                    className="btn btn-sm btn-block btn-link"
                                 >
                                     <Link to="/register">
                                         ¿Registrarse?

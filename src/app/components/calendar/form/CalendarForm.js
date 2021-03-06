@@ -5,7 +5,10 @@ import useForm from '../../../hooks/useForm';
 import {toast} from 'react-toastify';
 import {TOASTER_CONFIG} from '../../../constant/toaster-config';
 import {useDispatch, useSelector} from 'react-redux';
-import {calendarAddNewEvent, calendarClearSelectedEvent, calendarUpdateEvent} from '../../../actions/calendar';
+import {
+    calendarClearSelectedEvent, calendarStartUpdateEvent,
+    calendatStartAddNewEvent
+} from '../../../actions/calendar';
 import {uiCloseModal} from '../../../actions/ui';
 
 const initalDate = moment()
@@ -24,7 +27,7 @@ function CalendarForm() {
 
     const [formValues, formInputChange, resetForm, setFormValues] = useForm({
         title: '',
-        note: '',
+        notes: '',
         startDate: initalDate,
         endDate: finishDate,
     });
@@ -33,7 +36,7 @@ function CalendarForm() {
 
     const {
         title,
-        note,
+        notes,
         startDate,
         endDate,
     } = formValues;
@@ -68,42 +71,36 @@ function CalendarForm() {
     const handleOnSubmit = (event) => {
         event.preventDefault();
         const date1 = moment(startDate)
-            .format('yyyy-MM-DD HH:mm');
+            .format('MM/DD/YYYY');
         const date2 = moment(endDate)
-            .format('yyyy-MM-DD HH:mm');
+            .format('MM/DD/YYYY');
 
-        const isValidDate = moment(date1)
+        const isValidDate = moment(date1, 'MM/DD/YYYY')
             .isSameOrBefore(date2);
 
         if (!isValidDate) {
-            toast.error('Fecha no válida. La fecha de inicio debe ser menor a la final.', {
+            return toast.error('Fecha no válida. La fecha de inicio debe ser menor a la final.', {
                 ...TOASTER_CONFIG,
             });
-            return;
         }
 
         const newEvent = {
-            id: Math.random(),
             ...formValues,
-            user: {
-                uid: 69,
-                name: 'usario quemado',
-            }
+            startDate: date1,
+            endDate: date2,
         }
 
+        formValues.notes === '' && delete newEvent.notes;
+
         if (selectedEvent) {
-            delete newEvent.id;
-            dispatch(calendarUpdateEvent(selectedEvent.id, newEvent));
+            dispatch(calendarStartUpdateEvent(selectedEvent._id, newEvent));
         } else {
-            dispatch(calendarAddNewEvent(newEvent));
+            dispatch(calendatStartAddNewEvent(newEvent));
         }
 
         dispatch(calendarClearSelectedEvent());
         dispatch(uiCloseModal());
         resetForm();
-
-        const mensaje = selectedEvent ? 'editado' : 'agregado';
-        toast.success(`Evento ${mensaje} de manera correcta`, TOASTER_CONFIG);
     }
 
     return (
@@ -181,9 +178,9 @@ function CalendarForm() {
                             className="form-control"
                             placeholder="Notas adicionales"
                             rows="5"
-                            name="note"
+                            name="notes"
                             onChange={formInputChange}
-                            value={note}
+                            value={notes}
                         />
                     </div>
 
