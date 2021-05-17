@@ -1,6 +1,6 @@
 export const enviroment = {
     production: true,
     backend: {
-        url: 'http://calendar-edw-app.herokuapp.com',
+        url: 'https://edw-agenda-app.herokuapp.com',
     }
 }

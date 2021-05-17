@@ -12,8 +12,8 @@ function LoginScreen() {
 
     const dispatch = useDispatch();
     const [formValues, formInputChange] = useForm({
-        email: 'vanessa@gmail.com',
-        password: '12345678',
+        email: '',
+        password: '',
     });
 
     const {email, password} = formValues;

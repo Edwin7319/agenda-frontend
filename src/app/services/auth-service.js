@@ -1,4 +1,4 @@
-import {enviroment} from '../../environments/environment.dev';
+import {enviroment} from '../../environments/environment.prod';
 import axios from 'axios';
 
 const baseUrl = enviroment.backend.url;
