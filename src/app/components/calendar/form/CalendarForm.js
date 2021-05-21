@@ -86,8 +86,8 @@ function CalendarForm() {
 
         const newEvent = {
             ...formValues,
-            startDate: date1,
-            endDate: date2,
+            startDate: moment(startDate).format('YYYY-MM-DD'),
+            endDate: moment(endDate).format('YYYY-MM-DD'),
         }
 
         formValues.notes === '' && delete newEvent.notes;
